@@ -1,6 +1,6 @@
 using System.Drawing;
-using System.Drawing.Imaging;
 using TagCloud.FileReader;
+using TagCloud.ImageFileWriter;
 using TagCloud.Logger;
 using TagCloud.WordPreprocessor;
 using TagCloud.WordRenderer;
@@ -11,6 +11,7 @@ namespace TagCloud;
 public class WordCloudImageGeneratorImpl(
     ILogger logger,
     FileReaderRegistry readerRegistry,
+    ImageFileWriterRegistry imageWriterRegistry,
     IWordPreprocessor wordPreprocessor,
     IWordStatistics wordStatistics,
     IWordRenderer wordRenderer
@@ -40,7 +41,9 @@ public class WordCloudImageGeneratorImpl(
         }
         else
         {
-            logger.Error("Input file is not supported.");
+            logger.Error($"Unsupported input file extension: {extension}");
+            logger.Error($"Supported extensions are: {string.Join(", ",
+                readerRegistry.GetSupportedFileExtensions())}");
             return false;
         }
         return true;
@@ -51,13 +54,25 @@ public class WordCloudImageGeneratorImpl(
         if (_bitmap == null)
             throw new InvalidOperationException("Image was not generated yet.");
         
-        if (Path.GetExtension(filePath) != ".png")
+        if (imageWriterRegistry.TryGetImageFileWriter(Path.GetExtension(filePath), out var imageWriter))
         {
-            logger.Error("Only .png files are supported.");
-            return;
+            imageWriter.SaveImage(_bitmap, filePath);
         }
-        _bitmap.Save(filePath, ImageFormat.Png);
+        else
+        {
+            throw new ArgumentException($"Unsupported image format: {Path.GetExtension(filePath)}");
+        }
         
         logger.Info($"Output file is saved to {Path.GetFullPath(filePath)}");
+    }
+
+    public bool IsSupportedImageFileExtension(string fileExtension)
+    {
+        return imageWriterRegistry.IsSupportedExtension(fileExtension);
+    }
+
+    public IEnumerable<string> GetSupportedImageFileExtensions()
+    {
+        return imageWriterRegistry.GetSupportedImageFileExtensions();
     }
 }

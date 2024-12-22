@@ -21,4 +21,9 @@ public class FileReaderRegistry
         fileReader.Dispose();
         _fileReaders.Add(fileReader.FileExtension, fileReader);
     }
+
+    public IEnumerable<string> GetSupportedFileExtensions()
+    {
+        return _fileReaders.Keys;
+    }
 }
