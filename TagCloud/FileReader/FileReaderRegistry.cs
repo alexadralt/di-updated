@@ -22,6 +22,11 @@ public class FileReaderRegistry
         _fileReaders.Add(fileReader.FileExtension, fileReader);
     }
 
+    public bool IsSupportedFileExtension(string fileExtension)
+    {
+        return _fileReaders.ContainsKey(fileExtension);
+    }
+
     public IEnumerable<string> GetSupportedFileExtensions()
     {
         return _fileReaders.Keys;

@@ -2,6 +2,7 @@
 using ConsoleClient;
 using Pure.DI;
 using TagCloud;
+using TagCloud.FileHandler;
 using TagCloud.FileReader;
 using TagCloud.ImageFileWriter;
 using TagCloud.Logger;
@@ -18,6 +19,7 @@ DI.Setup("Composition")
     .Bind<IWordRenderer>().To<TagCloudWordRenderer>()
     .Bind<ICircularCloudLayouter>().To<CircularCloudLayouterImpl>()
     .Bind<IImageFileWriter>().To<PngImageFileWriter>()
+    .Bind<IFileHandler>().To<FileHandlerImpl>()
     .Hint(Hint.Resolve, "Off")
     .Bind().As(Lifetime.Singleton).To<WordCloudImageGeneratorImpl>()
     .Bind().As(Lifetime.Singleton).To<WordStatisticsImpl>()

@@ -1,6 +1,5 @@
 using System.Drawing;
-using TagCloud.FileReader;
-using TagCloud.ImageFileWriter;
+using TagCloud.FileHandler;
 using TagCloud.Logger;
 using TagCloud.WordPreprocessor;
 using TagCloud.WordRenderer;
@@ -9,8 +8,7 @@ namespace TagCloud;
 
 public class WordCloudImageGeneratorImpl(
     ILogger logger,
-    FileReaderRegistry readerRegistry,
-    ImageFileWriterRegistry imageWriterRegistry,
+    IFileHandler fileHandler,
     IWordPreprocessor wordPreprocessor,
     IWordRenderer wordRenderer
     ): IWordCloudImageGenerator
@@ -19,31 +17,18 @@ public class WordCloudImageGeneratorImpl(
     
     public bool TryGenerateImageFromFile(string filePath)
     {
-        if (!Path.Exists(filePath))
+        if (!fileHandler.IsValidInputFile(filePath, out var error))
         {
-            logger.Error($"Could not find input file: {Path.GetFullPath(filePath)}");
+            logger.Error(error!);
             return false;
         }
-        
-        var extension = Path.GetExtension(filePath);
-        if (readerRegistry.TryGetFileReader(extension, out var fileReader))
+
+        foreach (var line in fileHandler.ReadAllLines(filePath))
         {
-            fileReader.OpenFile(Path.GetFullPath(filePath));
-            while (fileReader.TryGetNextLine(out var line))
-            {
-                var words = wordPreprocessor.ExtractWords(line);
-                wordRenderer.WordStatistics.Populate(words);
-            }
-            readerRegistry.ReturnFileReader(fileReader);
-            _bitmap = wordRenderer.Render();
+            var words = wordPreprocessor.ExtractWords(line);
+            wordRenderer.WordStatistics.Populate(words);
         }
-        else
-        {
-            logger.Error($"Unsupported input file extension: {extension}");
-            logger.Error($"Supported extensions are: {string.Join(", ",
-                readerRegistry.GetSupportedFileExtensions())}");
-            return false;
-        }
+        _bitmap = wordRenderer.Render();
         return true;
     }
 
@@ -52,25 +37,16 @@ public class WordCloudImageGeneratorImpl(
         if (_bitmap == null)
             throw new InvalidOperationException("Image was not generated yet.");
         
-        if (imageWriterRegistry.TryGetImageFileWriter(Path.GetExtension(filePath), out var imageWriter))
-        {
-            imageWriter.SaveImage(_bitmap, filePath);
-        }
-        else
-        {
-            throw new ArgumentException($"Unsupported image format: {Path.GetExtension(filePath)}");
-        }
-        
-        logger.Info($"Output file is saved to {Path.GetFullPath(filePath)}");
+        fileHandler.SaveImage(_bitmap, filePath);
     }
 
     public bool IsSupportedImageFileExtension(string fileExtension)
     {
-        return imageWriterRegistry.IsSupportedExtension(fileExtension);
+        return fileHandler.IsSupportedOutputFileExtension(fileExtension);
     }
 
     public IEnumerable<string> GetSupportedImageFileExtensions()
     {
-        return imageWriterRegistry.GetSupportedImageFileExtensions();
+        return fileHandler.GetSupportedOutputFileExtensions();
     }
 }
