@@ -41,7 +41,7 @@ public class WordDelimiterProviderImpl : IWordDelimiterProvider
             fileReader.OpenFile(Path.GetFullPath(path));
             while (fileReader.TryGetNextLine(out var line))
                 _delimiters.Add(line);
-            fileReader.Dispose();
+            _fileReaderRegistry.ReturnFileReader(fileReader);
         }
         else
         {

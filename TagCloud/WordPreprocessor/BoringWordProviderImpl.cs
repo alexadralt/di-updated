@@ -27,7 +27,7 @@ public class BoringWordProviderImpl(FileReaderRegistry fileReaderRegistry, ILogg
             fileReader.OpenFile(Path.GetFullPath(filePath));
             while (fileReader.TryGetNextLine(out var line))
                 _boringWords.Add(line);
-            fileReader.Dispose();
+            fileReaderRegistry.ReturnFileReader(fileReader);
         }
         else
         {
