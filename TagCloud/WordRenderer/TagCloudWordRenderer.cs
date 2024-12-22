@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using TagCloud.SettingsProvider;
 using TagCloud.WordCloudLayouter;
+using TagCloud.WordStatistics;
 
 namespace TagCloud.WordRenderer;
 
@@ -28,4 +29,6 @@ public class TagCloudWordRenderer(
         return bitmap;
     }
 #pragma warning restore CA1416
+
+    public IWordStatistics WordStatistics => wordCloudLayouter.WordStatistics;
 }

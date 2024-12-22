@@ -6,4 +6,5 @@ namespace TagCloud.WordRenderer;
 public interface IWordRenderer
 {
     public Bitmap Render();
+    public IWordStatistics WordStatistics { get; }
 }

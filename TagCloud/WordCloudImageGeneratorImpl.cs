@@ -4,7 +4,6 @@ using TagCloud.ImageFileWriter;
 using TagCloud.Logger;
 using TagCloud.WordPreprocessor;
 using TagCloud.WordRenderer;
-using TagCloud.WordStatistics;
 
 namespace TagCloud;
 
@@ -13,7 +12,6 @@ public class WordCloudImageGeneratorImpl(
     FileReaderRegistry readerRegistry,
     ImageFileWriterRegistry imageWriterRegistry,
     IWordPreprocessor wordPreprocessor,
-    IWordStatistics wordStatistics,
     IWordRenderer wordRenderer
     ): IWordCloudImageGenerator
 {
@@ -34,7 +32,7 @@ public class WordCloudImageGeneratorImpl(
             while (fileReader.TryGetNextLine(out var line))
             {
                 var words = wordPreprocessor.ExtractWords(line);
-                wordStatistics.Populate(words);
+                wordRenderer.WordStatistics.Populate(words);
             }
             readerRegistry.ReturnFileReader(fileReader);
             _bitmap = wordRenderer.Render();

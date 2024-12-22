@@ -37,4 +37,6 @@ public class WordCloudLayouterImpl(
         }
     }
 #pragma warning restore CA1416
+
+    public IWordStatistics WordStatistics => statistics;
 }
