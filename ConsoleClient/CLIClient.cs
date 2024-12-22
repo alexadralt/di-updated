@@ -53,7 +53,7 @@ public class CLIClient(
 
                     var words = wordPreprocessor.ExtractWords(sb.ToString());
                     wordStatistics.Populate(words);
-                    bitmap = wordRenderer.Render(wordStatistics);
+                    bitmap = wordRenderer.Render();
                 }
                 else
                 {

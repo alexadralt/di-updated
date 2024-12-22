@@ -5,6 +5,7 @@ using TagCloud.FileReader;
 using TagCloud.Logger;
 using TagCloud.SettingsProvider;
 using TagCloud.TagsCloudVisualization;
+using TagCloud.WordCloudLayouter;
 using TagCloud.WordPreprocessor;
 using TagCloud.WordRenderer;
 using TagCloud.WordStatistics;
@@ -12,10 +13,11 @@ using TagCloud.WordStatistics;
 DI.Setup("Composition")
     .Bind<IFileReader>().To<TxtFileReader>()
     .Bind<IWordPreprocessor>().To<TagPreprocessor>()
-    .Bind<IWordStatistics>().To<WordStatisticsImpl>()
     .Bind<IWordRenderer>().To<TagCloudWordRenderer>()
     .Bind<ICircularCloudLayouter>().To<CircularCloudLayouterImpl>()
     .Hint(Hint.Resolve, "Off")
+    .Bind().As(Lifetime.Singleton).To<WordStatisticsImpl>()
+    .Bind().As(Lifetime.Singleton).To<WordCloudLayouterImpl>()
     .Bind().As(Lifetime.Singleton).To<BoringWordProviderImpl>()
     .Bind().As(Lifetime.Singleton).To<WordDelimiterProviderImpl>()
     .Bind().As(Lifetime.Singleton).To<ConsoleLogger>()
