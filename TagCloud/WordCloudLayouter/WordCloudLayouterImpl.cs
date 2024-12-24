@@ -14,7 +14,7 @@ public class WordCloudLayouterImpl(
     : IWordCloudLayouter
 {
 #pragma warning disable CA1416
-    public void DrawWordCloud(Graphics graphics)
+    public IEnumerable<WordLayoutInfo> GetWordCloudLayout(Func<string, Font, SizeF> stringMeasure)
     {
         var settings = settingsProvider.GetSettings();
         
@@ -26,14 +26,12 @@ public class WordCloudLayouterImpl(
             var frequency = statistics.GetWordFrequency(word);
             var fontSize = settings.MinFontSize + (int)((settings.MaxFontSize - settings.MinFontSize) * frequency);
             var font = new Font(settings.Font, fontSize);
-            var stringSize = graphics.MeasureString(word, font);
+            var stringSize = stringMeasure(word, font);
             var renderSize = new Size(1 + (int)stringSize.Width, (int)stringSize.Height);
             
             var rectangle = cloudLayouter.PutNextRectangle(renderSize);
-            
+            yield return new WordLayoutInfo(word, font, rectangle);
             logger.ReportProgress($"Put {i + 1}/{words.Length} words", (double)i / (words.Length - 1));
-            
-            graphics.DrawString(word, font, new SolidBrush(settings.TextColor), rectangle);
         }
     }
 #pragma warning restore CA1416

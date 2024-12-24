@@ -24,8 +24,13 @@ public class TagCloudWordRenderer(
         graphics.SmoothingMode = SmoothingMode.AntiAlias;
         graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
         graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+        var brush = new SolidBrush(settings.TextColor);
 
-        wordCloudLayouter.DrawWordCloud(graphics);
+        foreach (var wordLayoutInfo in wordCloudLayouter.GetWordCloudLayout(
+                     (word, font) => graphics.MeasureString(word, font)))
+            graphics.DrawString(wordLayoutInfo.Word, wordLayoutInfo.Font,
+                brush, wordLayoutInfo.Rectangle);
+        
         return bitmap;
     }
 #pragma warning restore CA1416

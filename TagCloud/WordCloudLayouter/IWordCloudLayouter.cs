@@ -5,6 +5,6 @@ namespace TagCloud.WordCloudLayouter;
 
 public interface IWordCloudLayouter
 {
-    public void DrawWordCloud(Graphics graphics);
+    public IEnumerable<WordLayoutInfo> GetWordCloudLayout(Func<string, Font, SizeF> stringMeasure);
     public IWordStatistics WordStatistics { get; }
 }
