@@ -1,3 +1,4 @@
+using System.Text;
 using TagCloud.Logger;
 
 namespace ConsoleClient;
@@ -31,17 +32,15 @@ public class ConsoleLogger : ILogger
         ArgumentOutOfRangeException.ThrowIfGreaterThan(progress, 1);
         var progressPercentage = (int)(progress * 100.0);
         var (left, top) = Console.GetCursorPosition();
-        Console.Write($"{message}: [");
+        Console.Write("Progress - [");
         for (var i = 0; i <= 10; i++)
-        {
-            if (i <= progressPercentage / 10)
-                Console.Write('=');
-            else
-                Console.Write(' ');
-        }
-        Console.WriteLine(']');
+            Console.Write(i <= progressPercentage / 10 ? '=' : ' ');
+        Console.Write(']');
         
+        Console.Write($" {progressPercentage}%/100% - {message}");
         if (progressPercentage < 100)
             Console.SetCursorPosition(left, top);
+        else
+            Console.WriteLine();
     }
 }
