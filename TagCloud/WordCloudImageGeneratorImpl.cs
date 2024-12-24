@@ -49,4 +49,14 @@ public class WordCloudImageGeneratorImpl(
     {
         return fileHandler.GetSupportedOutputFileExtensions();
     }
+
+    public void LoadWordDelimitersFile(string filePath)
+    {
+        wordPreprocessor.LoadWordDelimitersFile(filePath);
+    }
+
+    public void LoadBoringWordsFile(string filePath)
+    {
+        wordPreprocessor.LoadBoringWordsFile(filePath);
+    }
 }

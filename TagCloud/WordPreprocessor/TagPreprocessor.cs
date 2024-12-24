@@ -18,6 +18,16 @@ public class TagPreprocessor(
             .Where(IsGoodWord);
     }
 
+    public void LoadWordDelimitersFile(string filePath)
+    {
+        wordDelimiterProvider.LoadDelimitersFile(filePath);
+    }
+
+    public void LoadBoringWordsFile(string filePath)
+    {
+        boringWordProvider.LoadBoringWordsFile(filePath);
+    }
+
     private string ProcessWord(string word)
     {
         return word.ToLower();

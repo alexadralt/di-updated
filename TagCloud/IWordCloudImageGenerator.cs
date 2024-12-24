@@ -7,4 +7,6 @@ public interface IWordCloudImageGenerator
     
     public bool IsSupportedImageFileExtension(string fileExtension);
     public IEnumerable<string> GetSupportedImageFileExtensions();
+    public void LoadWordDelimitersFile(string filePath);
+    public void LoadBoringWordsFile(string filePath);
 }

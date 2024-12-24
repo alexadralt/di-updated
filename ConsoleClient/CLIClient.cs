@@ -6,21 +6,15 @@ namespace ConsoleClient;
 
 public class CLIClient(
     IWordCloudImageGenerator wordCloudImageGenerator,
-    ILogger logger,
-    IWordDelimiterProvider wordDelimiterProvider,
-    IBoringWordProvider boringWordProvider)
+    ILogger logger)
 {
     public void RunOptions(Options options)
     {
         if (options.WordDelimiterFile != null!)
-        {
-            wordDelimiterProvider.LoadDelimitersFile(options.WordDelimiterFile);
-        }
+            wordCloudImageGenerator.LoadWordDelimitersFile(options.WordDelimiterFile);
 
         if (options.BoringWordsFile != null!)
-        {
-            boringWordProvider.LoadBoringWordsFile(options.BoringWordsFile);
-        }
+            wordCloudImageGenerator.LoadBoringWordsFile(options.BoringWordsFile);
 
         var imageFileExtension = Path.GetExtension(options.OutputFile);
         if (!wordCloudImageGenerator.IsSupportedImageFileExtension(imageFileExtension))
