@@ -93,7 +93,9 @@ public class CircularCloudLayouterImpl : ICircularCloudLayouter
         if (averageStep >= _startingStep + _density)
             _startingStep = (float)Math.Round(averageStep, 2, MidpointRounding.ToZero);
 
-        return resultList.Count > 0 ? resultList.MinBy(tuple => tuple.Item2).Item1 : Rectangle.Empty;
+        return resultList.Count > 0
+            ? resultList.MinBy(tuple => tuple.Item2).Item1
+            : throw new Exception("Word cloud does not fit on image of provided size");
     }
 
     private bool TryFindGoodRectanglePosition(Point posToPlace, Size rectangleSize, out Rectangle result)

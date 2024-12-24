@@ -28,7 +28,16 @@ public class WordCloudImageGeneratorImpl(
             var words = wordPreprocessor.ExtractWords(line);
             wordRenderer.WordStatistics.Populate(words);
         }
-        _bitmap = wordRenderer.Render();
+
+        try
+        {
+            _bitmap = wordRenderer.Render();
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex.Message);
+            return false;
+        }
         return true;
     }
 
