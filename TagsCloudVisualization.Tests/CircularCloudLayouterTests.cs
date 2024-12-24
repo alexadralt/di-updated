@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -25,7 +26,9 @@ public class CircularCloudLayouterTests
     [SetUp]
     public void SetUp()
     {
-        _circularCloudLayouter = new CircularCloudLayouterImpl(SettingsProviderImpl.TestSettingsProvider);
+        var settingsProvider = A.Fake<ISettingsProvider>();
+        A.CallTo(() => settingsProvider.GetSettings()).Returns(Settings.TestSettings);
+        _circularCloudLayouter = new CircularCloudLayouterImpl(settingsProvider);
     }
 
     [OneTimeSetUp]
