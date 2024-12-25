@@ -94,10 +94,32 @@ public class TagPreprocessorTests
                 .Returns(true);
         }
 
-        var wordsArr = words.Split(_worDelimiters.ToArray(), _splitOptions)
+        var notBoringWords = words.Split(_worDelimiters.ToArray(), _splitOptions)
             .Except(boringWordsArr);
         _tagPreprocessor.ExtractWords(words)
             .Should()
-            .BeEquivalentTo(wordsArr);
+            .BeEquivalentTo(notBoringWords);
+    }
+
+    [Test]
+    public void LoadWordDelimitersFile_CallsWordDelimitersProvider()
+    {
+        var path = "delimiters.txt";
+        
+        _tagPreprocessor.LoadWordDelimitersFile(path);
+
+        A.CallTo(() => _wordDelimiterProvider.LoadDelimitersFile(path))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Test]
+    public void LoadBoringWordsFile_CallsBoringWordsProvider()
+    {
+        var path = "boring-words.txt";
+        
+        _tagPreprocessor.LoadBoringWordsFile(path);
+        
+        A.CallTo(() => _boringWordProvider.LoadBoringWordsFile(path))
+            .MustHaveHappenedOnceExactly();
     }
 }
