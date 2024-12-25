@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using TagCloud.FileHandler;
 using TagCloud.Logger;
@@ -49,14 +50,27 @@ public class WordCloudImageGeneratorImpl(
         fileHandler.SaveImage(_bitmap, filePath);
     }
 
-    public bool IsSupportedImageFileExtension(string fileExtension)
+    public bool IsSupportedOutputFileExtension(string? filePath, out string? errorMessage)
     {
-        return fileHandler.IsSupportedOutputFileExtension(fileExtension);
+        var extension = Path.GetExtension(filePath);
+        if (string.IsNullOrEmpty(extension))
+        {
+            errorMessage = $"Missing output file extension: {filePath} <---";
+            return false;
+        }
+
+        var isSupported = fileHandler.IsSupportedOutputFileExtension(extension);
+        errorMessage = isSupported
+            ? null
+            : $"Unsupported output file extension: {extension}\n"
+              + $"Supported extensions are: {string.Join(", ",
+                  fileHandler.GetSupportedOutputFileExtensions())}";
+        return isSupported;
     }
 
-    public IEnumerable<string> GetSupportedImageFileExtensions()
+    public bool DoesOutputFileExist(string filePath)
     {
-        return fileHandler.GetSupportedOutputFileExtensions();
+        return Path.Exists(filePath);
     }
 
     public void LoadWordDelimitersFile(string filePath)

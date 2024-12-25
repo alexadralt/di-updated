@@ -43,18 +43,24 @@ public class FileHandlerImpl(
 
     public bool IsValidInputFile(string filePath, out string? errorMessage)
     {
-        if (!Path.Exists(filePath))
+        var extension = Path.GetExtension(filePath);
+        if (string.IsNullOrEmpty(extension))
         {
-            errorMessage = $"Could not find input file: {Path.GetFullPath(filePath)}";
+            errorMessage = $"Missing input file extension: {filePath} <---";
             return false;
         }
-    
-        var extension = Path.GetExtension(filePath);
+        
         if (!readerRegistry.IsSupportedFileExtension(extension))
         {
             errorMessage = $"Unsupported input file extension: {extension}\n" +
                            $"Supported extensions are: {string.Join(", ",
                                readerRegistry.GetSupportedFileExtensions())}";
+            return false;
+        }
+        
+        if (!Path.Exists(filePath))
+        {
+            errorMessage = $"Could not find input file: {Path.GetFullPath(filePath)}";
             return false;
         }
         

@@ -16,16 +16,36 @@ public class CLIClient(
         if (options.BoringWordsFile != null!)
             wordCloudImageGenerator.LoadBoringWordsFile(options.BoringWordsFile);
 
-        var imageFileExtension = Path.GetExtension(options.OutputFile);
-        if (!wordCloudImageGenerator.IsSupportedImageFileExtension(imageFileExtension))
+        if (!wordCloudImageGenerator.IsSupportedOutputFileExtension(options.OutputFile, out var errorMessage))
         {
-            logger.Error($"Unsupported output file extension: {imageFileExtension}");
-            logger.Error($"Supported extensions are: {string.Join(", ",
-                wordCloudImageGenerator.GetSupportedImageFileExtensions())}");
+            logger.Error(errorMessage!);
             return;
         }
+
+        if (!options.AlwaysOverwrite
+            && wordCloudImageGenerator.DoesOutputFileExist(options.OutputFile)
+            && !AskForOverwrite(options.OutputFile))
+            return;
         
         if (wordCloudImageGenerator.TryGenerateImageFromFile(options.InputFile))
             wordCloudImageGenerator.SaveImageToFile(options.OutputFile);
+    }
+
+    private bool AskForOverwrite(string outputFile)
+    {
+        logger.Warning($"Output file {outputFile} already exists.");
+        logger.Warning("Do you want to overwrite? (Y/N): ");
+        var userInput = Console.ReadKey();
+        Console.WriteLine();
+        if (userInput.Key == ConsoleKey.Y)
+        {
+            logger.Info("Overwriting output file.");
+            return true;
+        }
+        else
+        {
+            logger.Info("Program is terminated.");
+            return false;
+        }
     }
 }

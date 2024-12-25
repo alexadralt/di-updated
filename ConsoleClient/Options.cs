@@ -15,4 +15,7 @@ public class Options
     
     [Option('b', "boring", Required = false, Default = null, HelpText = "Path to file with boring words.")]
     public string BoringWordsFile { get; set; }
+    
+    [Option("overwrite", Required = false, Default = false, HelpText = "Always overwrite output file.")]
+    public bool AlwaysOverwrite { get; set; }
 }
