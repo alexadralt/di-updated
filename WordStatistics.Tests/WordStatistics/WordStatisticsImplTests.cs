@@ -57,7 +57,7 @@ public class WordStatisticsImplTests
         
         var obtainedWords = _wordStatistics.GetWords();
         
-        obtainedWords.Should().BeEquivalentTo(expectedOrder.Split(_worDelimiters.ToArray(), _splitOptions));
+        obtainedWords.Should().Equal(expectedOrder.Split(_worDelimiters.ToArray(), _splitOptions));
     }
 
     [Test]
@@ -72,6 +72,6 @@ public class WordStatisticsImplTests
         
         var obtainedWords = _wordStatistics.GetWords();
         
-        obtainedWords.Should().BeEquivalentTo(expectedOrder.Split(_worDelimiters.ToArray(), _splitOptions));
+        obtainedWords.Should().Equal(expectedOrder.Split(_worDelimiters.ToArray(), _splitOptions));
     }
 }
