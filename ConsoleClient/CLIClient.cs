@@ -22,6 +22,12 @@ public class CLIClient(
             return;
         }
 
+        if (!wordCloudImageGenerator.IsValidInputFile(options.InputFile, out errorMessage))
+        {
+            logger.Error(errorMessage);
+            return;
+        }
+
         if (!options.AlwaysOverwrite
             && wordCloudImageGenerator.DoesOutputFileExist(options.OutputFile)
             && !AskForOverwrite(options.OutputFile))

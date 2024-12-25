@@ -18,12 +18,6 @@ public class WordCloudImageGeneratorImpl(
     
     public bool TryGenerateImageFromFile(string filePath)
     {
-        if (!fileHandler.IsValidInputFile(filePath, out var error))
-        {
-            logger.Error(error!);
-            return false;
-        }
-
         foreach (var line in fileHandler.ReadAllLines(filePath))
         {
             var words = wordPreprocessor.ExtractWords(line);
@@ -50,8 +44,19 @@ public class WordCloudImageGeneratorImpl(
         fileHandler.SaveImage(_bitmap, filePath);
     }
 
+    public bool IsValidInputFile(string filePath, out string? errorMessage)
+    {
+        return fileHandler.IsValidInputFile(filePath, out errorMessage);
+    }
+
     public bool IsSupportedOutputFileExtension(string? filePath, out string? errorMessage)
     {
+        if (string.IsNullOrEmpty(filePath) || string.IsNullOrWhiteSpace(filePath))
+        {
+            errorMessage = "Output file was not specified.";
+            return false;
+        }
+        
         var extension = Path.GetExtension(filePath);
         if (string.IsNullOrEmpty(extension))
         {

@@ -43,6 +43,12 @@ public class FileHandlerImpl(
 
     public bool IsValidInputFile(string filePath, out string? errorMessage)
     {
+        if (string.IsNullOrEmpty(filePath) || string.IsNullOrWhiteSpace(filePath))
+        {
+            errorMessage = "Input file was not specified.";
+            return false;
+        }
+        
         var extension = Path.GetExtension(filePath);
         if (string.IsNullOrEmpty(extension))
         {
