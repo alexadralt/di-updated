@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagPreprocessor.Tests", "Ta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordStatistics.Tests", "WordStatistics.Tests\WordStatistics.Tests.csproj", "{54F4D25D-3F15-4881-B10C-06BBF0D1CD13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCloudLayouter.Tests", "WordCloudLayouter.Tests\WordCloudLayouter.Tests.csproj", "{A6316E7F-88EC-4611-863E-8C754EF248CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{54F4D25D-3F15-4881-B10C-06BBF0D1CD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54F4D25D-3F15-4881-B10C-06BBF0D1CD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54F4D25D-3F15-4881-B10C-06BBF0D1CD13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6316E7F-88EC-4611-863E-8C754EF248CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6316E7F-88EC-4611-863E-8C754EF248CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6316E7F-88EC-4611-863E-8C754EF248CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6316E7F-88EC-4611-863E-8C754EF248CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
