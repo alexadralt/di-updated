@@ -42,7 +42,7 @@ public class WordStatisticsImplTests
         var frequency = _wordStatistics.GetWordFrequency(word);
         
         frequency.Should()
-            .Be(words.Length > 0 ? (double)wordCount / words.Length : 0d);
+            .Be(words.Length > 0 ? (float)wordCount / words.Length : 0);
     }
 
     [Test]

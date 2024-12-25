@@ -24,10 +24,10 @@ public class WordCloudLayouterImpl(
             var word = words[i];
             
             var frequency = statistics.GetWordFrequency(word);
-            var fontSize = settings.MinFontSize + (int)((settings.MaxFontSize - settings.MinFontSize) * frequency);
+            var fontSize = settings.MinFontSize + (settings.MaxFontSize - settings.MinFontSize) * frequency;
             var font = new Font(settings.Font, fontSize);
             var stringSize = stringMeasure(word, font);
-            var renderSize = new Size(1 + (int)stringSize.Width, (int)stringSize.Height);
+            var renderSize = new Size(1 + (int)stringSize.Width, 1 + (int)stringSize.Height);
             
             var rectangle = cloudLayouter.PutNextRectangle(renderSize);
             yield return new WordLayoutInfo(word, font, rectangle);

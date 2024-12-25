@@ -5,10 +5,10 @@ public class WordStatisticsImpl : IWordStatistics
     private readonly Dictionary<string, int> _wordCounts = new();
     private int _totalWordCount = 0;
     
-    public double GetWordFrequency(string word)
+    public float GetWordFrequency(string word)
     {
         return _wordCounts.TryGetValue(word, out var count)
-            ? (double)count / _totalWordCount
+            ? (float)count / _totalWordCount
             : 0;
     }
 
