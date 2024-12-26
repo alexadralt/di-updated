@@ -15,6 +15,7 @@ nupkg/
 
 #DocxFileReaderTests
 !DocxFileReader.Tests/*
+!DocxFileReader.Tests/FileReader/*
 
 # Visual Studio Code
 .vscode/
