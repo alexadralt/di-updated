@@ -13,6 +13,9 @@ nupkg/
 # Integration Testing
 !WordCloudIntegrationTests/*
 
+#DocxFileReaderTests
+!DocxFileReader.Tests/*
+
 # Visual Studio Code
 .vscode/
 

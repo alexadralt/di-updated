@@ -38,7 +38,7 @@ public class DocxFileReader : IFileReader
         if (!Path.HasExtension(filePath) || !Path.GetExtension(filePath).Equals(FileExtension))
             throw new ArgumentException($"given path does not refer to a {FileExtension} file");
         if (!Path.Exists(filePath))
-            throw new FileNotFoundException("file not found");
+            throw new FileNotFoundException($"file not found {filePath}");
         
         _document = WordprocessingDocument.Open(filePath, false);
     }
