@@ -9,6 +9,9 @@ nupkg/
 *.txt
 *.png
 
+# Integration Testing
+!WordCloudIntegrationTests/*
+
 # Visual Studio Code
 .vscode/
 
