@@ -15,6 +15,7 @@ using TagCloud.WordStatistics;
 
 DI.Setup("Composition")
     .Bind<IFileReader>().To<TxtFileReader>()
+    .Bind<IFileReader>(2).To<DocxFileReader>()
     .Bind<IWordPreprocessor>().To<TagPreprocessor>()
     .Bind<IWordRenderer>().To<TagCloudWordRenderer>()
     .Bind<ICircularCloudLayouter>().To<CircularCloudLayouterImpl>()

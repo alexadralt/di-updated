@@ -1,28 +1,35 @@
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+
 namespace TagCloud.FileReader;
 
-public class TxtFileReader : IFileReader
+public class DocxFileReader : IFileReader
 {
-    private StreamReader? _streamReader;
+    private WordprocessingDocument? _document;
+    private OpenXmlElementList? _elementList;
+    private int _elementIndex;
 
-    public string FileExtension { get => ".txt"; }
+    public string FileExtension => ".docx";
     
     public void Dispose()
     {
         Dispose(true);
     }
-
+    
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
         {
-            _streamReader?.Dispose();
-            _streamReader = null;
+            _document?.Dispose();
+            _document = null;
+            _elementList = null;
+            _elementIndex = 0;
         }
     }
 
     public void OpenFile(string filePath)
     {
-        if (_streamReader != null)
+        if (_document != null)
             throw new InvalidOperationException("File is already open");
         ArgumentNullException.ThrowIfNull(filePath);
         
@@ -33,18 +40,24 @@ public class TxtFileReader : IFileReader
         if (!Path.Exists(filePath))
             throw new FileNotFoundException("file not found");
         
-        _streamReader = new StreamReader(filePath);
+        _document = WordprocessingDocument.Open(filePath, false);
     }
 
     public bool TryGetNextLine(out string line)
     {
         line = String.Empty;
-        if (_streamReader == null)
+        if (_document == null)
             throw new InvalidOperationException("File is not open");
-        if (_streamReader.EndOfStream)
+        _elementList ??= _document.MainDocumentPart?.Document.Body?.ChildElements;
+        if (_elementList == null)
             return false;
-        
-        line = _streamReader.ReadLine()!;
-        return true;
+        if (_elementIndex < _elementList.Value.Count)
+        {
+            line = _elementList.Value[_elementIndex].InnerText;
+            _elementIndex++;
+            return true;
+        }
+
+        return false;
     }
 }
