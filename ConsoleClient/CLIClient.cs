@@ -10,10 +10,10 @@ public class CLIClient(
 {
     public void RunOptions(Options options)
     {
-        if (options.WordDelimiterFile != null!)
+        if (options.WordDelimiterFile != null)
             wordCloudImageGenerator.LoadWordDelimitersFile(options.WordDelimiterFile);
 
-        if (options.BoringWordsFile != null!)
+        if (options.BoringWordsFile != null)
             wordCloudImageGenerator.LoadBoringWordsFile(options.BoringWordsFile);
 
         if (!wordCloudImageGenerator.IsSupportedOutputFileExtension(options.OutputFile, out var errorMessage))
@@ -24,7 +24,7 @@ public class CLIClient(
 
         if (!wordCloudImageGenerator.IsValidInputFile(options.InputFile, out errorMessage))
         {
-            logger.Error(errorMessage);
+            logger.Error(errorMessage!);
             return;
         }
 
